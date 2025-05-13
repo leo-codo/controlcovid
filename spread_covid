@@ -1,0 +1,163 @@
+# Import packages
+import scipy.integrate
+import numpy
+import matplotlib.pyplot as plt
+
+# ODEs
+def SIQRD_model(y, t, N, delta1, delta2, alfa, phi2, eta, pho, gamma, mu, Death,v):
+    S, I, Q, R, D = y
+    dS_dt = delta1 - alfa * S * I - mu * S - v*S
+    dI_dt = delta2 + (1 - Death) * (1 - eta) * alfa * S * I - (gamma + mu) * I
+    dQ_dt = (1 - phi2) * eta * alfa * S * I - (pho + mu) * Q
+    dR_dt = (Death * (1 - eta) + phi2 * eta) * alfa * S * I + pho * Q + gamma * I - mu * R+v*S
+    dD_dt = Death * I
+
+    return ([dS_dt, dI_dt, dQ_dt, dR_dt, dD_dt])
+
+
+# initial conditions: Dados para data do dia 11/05/2020.
+S0 = 109694.1  # Suscetíveis
+I0 = 696  # Infecciosos
+Q0 = 174  # isolados com Covid-19
+R0 = 5  # recuperados
+D0 = 4  # mortos
+N = 110573.1  # População
+R1 = 2.2  # taxa de contaminação por individuo
+eta = 0.2  # Taxa de isolamento de indivíduos infecciosos
+mu = 0.02056 / 365  # taxa de mortalidade
+gamma = 1 / 14.25  # taxa de recuperação não hospitalar
+Death = 0.034  # taxa de mortalidade do Covid-19
+phi2 = (0.112 + Death * (eta - 0.2)) / eta  # Taxa de mortalidade para individuos isolados
+pho = 1 / ((1 - eta) * (3.25 / 0.2) + gamma ** (-1))  # taxa de recuperação
+delta1 = 0.00645 / 365  # taxa de natalidade do maranhão
+delta2 = 0  # taxa de recrutamento de novos individuos
+q = 0.45  # taxa da população em isolamento
+zeta = (((2.5 * q) / 3.5) * 0.99 + (q / 7) * (0.99 + R1) + (1 - q) * R1) / R1  # parâmetro sensibilizador
+alfa = zeta * R1 * gamma / N  # taxa de suscetíveis
+v= 0.00 #vacinação
+
+# Time vector
+t = numpy.linspace(0, 120, 100)
+# Result
+solution = scipy.integrate.odeint(SIQRD_model, [S0, I0, Q0, R0, D0], t,
+                                   args=(N, delta1, delta2, alfa, phi2, eta, pho, gamma, mu, Death,v))
+solution = numpy.array(solution)
+
+
+####################################################################################
+def SIQRD_model1(y1, t1, N, delta1, delta2, alfa, phi2, eta1, pho, gamma, mu, Death):
+    S, I, Q, R, D = y1
+    dS_dt1 = delta1 - alfa * S * I - mu * S
+    dI_dt1 = delta2 + (1 - Death) * (1 - eta1) * alfa * S * I - (gamma + mu) * I
+    dQ_dt1 = (1 - phi2) * eta1 * alfa * S * I - (pho + mu) * Q
+    dR_dt1 = (Death * (1 - eta1) + phi2 * eta) * alfa * S * I + pho * Q + gamma * I - mu * R
+    dD_dt1 = Death * I
+
+    return ([dS_dt1, dI_dt1, dQ_dt1, dR_dt1, dD_dt1])
+
+
+# initial conditions: Dados para data do dia 11/05/2020.
+S0 = 109694.1  # Suscetíveis
+I0 = 696  # Infecciosos
+Q0 = 174  # isolados com Covid-19
+R0 = 5  # recuperados
+D0 = 4  # mortos
+N = 110573.1  # População
+R1 = 2.2  # taxa de contaminação por individuo
+eta1 = 0.5  # Taxa de isolamento de indivíduos infecciosos
+mu = 0.02056 / 365  # taxa de mortalidade
+gamma = 1 / 14.25  # taxa de recuperação não hospitalar
+Death = 0.034  # taxa de mortalidade do Covid-19
+phi2 = (0.112 + Death * (eta1 - 0.2)) / eta1  # Taxa de mortalidade para individuos isolados
+pho = 1 / ((1 - eta1) * (3.25 / 0.2) + gamma ** (-1))  # taxa de recuperação
+delta1 = 0.00645 / 365  # taxa de natalidade do maranhão
+delta2 = 0  # taxa de recrutamento de novos individuos
+q1 = 0.45  # taxa da população em isolamento
+zeta = (((2.5 * q1) / 3.5) * 0.99 + (q1 / 7) * (0.99 + R1) + (1 - q1) * R1) / R1  # parâmetro sensibilizador
+alfa = zeta * R1 * gamma / N  # taxa de suscetíveis
+# v= 0.05 #vacinação
+
+# Time vector
+t1 = numpy.linspace(0, 60, 100)
+# Result
+solution1 = scipy.integrate.odeint(SIQRD_model1, [S0, I0, Q0, R0, D0], t1,
+                                   args=(N, delta1, delta2, alfa, phi2, eta1, pho, gamma, mu, Death))
+solution1 = numpy.array(solution1)
+
+
+####################################################################################
+# ODEs
+def SIQRD_model2(y2, t2, N, delta1, delta2, alfa, phi2, eta2, pho, gamma, mu, Death):
+    S, I, Q, R, D = y2
+    dS_dt2 = delta1 - alfa * S * I - mu * S
+    dI_dt2 = delta2 + (1 - Death) * (1 - eta2) * alfa * S * I - (gamma + mu) * I
+    dQ_dt2 = (1 - phi2) * eta2 * alfa * S * I - (pho + mu) * Q
+    dR_dt2 = (Death * (1 - eta2) + phi2 * eta2) * alfa * S * I + pho * Q + gamma * I - mu * R
+    dD_dt2 = Death * I
+    return ([dS_dt2, dI_dt2, dQ_dt2, dR_dt2,dD_dt2])
+
+
+# initial conditions: Dados para data do dia 11/05/2020.
+S0 = 109694.1  # Suscetíveis
+I0 = 696  # Infecciosos
+Q0 = 174  # isolados com Covid-19
+R0 = 5  # recuperados
+D0 = 4  # mortos
+N = 110573.1  # População
+R1 = 2.2  # taxa de contaminação por individuo
+eta2 = 0.9  # Taxa de isolamento de indivíduos infecciosos
+mu = 0.02056 / 365  # taxa de mortalidade
+gamma = 1 / 14.25  # taxa de recuperação não hospitalar
+Death = 0.034  # taxa de mortalidade do Covid-19
+phi2 = (0.112 + Death * (eta2 - 0.2)) / eta2  # Taxa de mortalidade para individuos isolados
+pho = 1 / ((1 - eta2) * (3.25 / 0.2) + gamma ** (-1))  # taxa de recuperação
+delta1 = 0.00645 / 365  # taxa de natalidade do maranhão
+delta2 = 0  # taxa de recrutamento de novos individuos
+q2 = 0.45  # taxa da população em isolamento
+zeta = (((2.5 * q2) / 3.5) * 0.99 + (q2 / 7) * (0.99 + R1) + (1 - q2) * R1) / R1  # parâmetro sensibilizador
+alfa = zeta * R1 * gamma / N  # taxa de suscetíveis
+# v= 0.0 #vacinação
+
+# Time vector
+t2 = numpy.linspace(0, 60, 100)
+# Result
+solution2 = scipy.integrate.odeint(SIQRD_model2, [S0, I0, Q0, R0, D0], t2,
+                                   args=(N, delta1, delta2, alfa, phi2, eta2, pho, gamma, mu, Death))
+solution2 = numpy.array(solution2)
+
+# Plot result
+plt.figure(figsize=[6, 4])
+#plt.plot(t, solution[:, 0], label = "Susceptible")
+#plt.plot(t, solution[:, 1], label = "Infectious")
+#plt.plot(t, solution[:, 2], label = "Quarantine")
+#plt.plot(t, solution[:, 3], label = "Recovered")
+#plt.plot(t, solution[:, 4], label = "Números de mortes")
+
+#plt.plot(t1, solution1[:, 0], label = "S(t)1")
+#plt.plot(t1, solution1[:, 1], label = "Median isolation of the population")
+#plt.plot(t1, solution1[:, 2], label = "Q(t)")
+#plt.plot(t1, solution1[:, 3], label = "R(t)1")
+#plt.plot(t1, solution1[:, 4], label = "D(t)1")
+
+#plt.plot(t2, solution2[:, 0], label = "S(t)2")
+plt.plot(t2, solution2[:, 1], label = "Broad isolation of the population")
+#plt.plot(t2, solution2[:, 2], label = "Q(t)2")
+#plt.plot(t2, solution2[:, 3], label = "R(t)2")
+#plt.plot(t2, solution2[:, 4], label = "D(t)2")
+
+plt.plot([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+          15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,
+          47,48,49,50,51,52,53,54,55,56, 57, 58],
+         [174, 220, 227, 244, 273, 279, 285, 364, 417, 461, 552, 614, 635, 645, 699, 709, 799, 888, 940, 1007, 1013,
+          1088, 1168, 1254, 1325,
+          1387, 1414, 1415, 1493, 1596, 1637, 1675, 1710,1739,1746,1794,1843,1917,1994,2056,2117,2120,2191,2272,
+          2336,2430,2473,2485,2500,2559,2610,2680,2783,2837,2841,2845,2912,2965,3021], 'o', label="Cases confirmed by SEMUS-Codó")
+
+plt.grid(True)
+plt.legend()
+plt.xlabel("Times in days (Day 0 = May 11th, 2020)")
+#plt.text(90, 3000, "Por Prof. Dr. Leonardo Rodrigues", fontsize=12)
+plt.ylabel("Cases in Codó")
+plt.title("SIQR Model")
+plt.show()
+
